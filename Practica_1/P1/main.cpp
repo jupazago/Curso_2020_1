@@ -2,23 +2,28 @@
 
 using namespace std;
 
-void ejercicio_1(); //R
-void ejercicio_3(); //R
-void ejercicio_5(); //R
-void ejercicio_7(); //R
+void ejercicio_1();
+void ejercicio_3();
+void ejercicio_5();
+void ejercicio_7();
 void ejercicio_8();
-void ejercicio_10();//R
+void ejercicio_10();
 void ejercicio_12();
-void ejercicio_13();//R
-void ejercicio_15();//R
+void ejercicio_13();
+void ejercicio_15();
 void ejercicio_17();
 
+int Sumar_multiplos(int numero, int limite);
 int es_primo(int i); //funcion para los numeros primos
 float raizC(float m);//funcion para la raiz cuadrada de un numero
 
 int main()
 {
     int valor = 1;
+
+    cout << "*******************************"<<endl;
+    cout << "******** Laboratorio 1 ********"<<endl;
+    cout << "*******************************"<<endl<<endl;
 
     cout << "seleccione un ejercicio: ";
     cin >> valor;
@@ -67,6 +72,7 @@ int main()
 
             default: puts("Error, selecciona una opcion valida \n");
         }
+        cout << "--------------------------------------------------------"<<endl;
         cout << endl<<endl<<"seleccione un ejercicio: ";
         cin >> valor;
 
@@ -106,8 +112,7 @@ void ejercicio_1(){
 
 
     }catch (char capturador) {
-        cout << "Error.\n";
-        //cout << "Error: " << capturador;
+        cout << "Error: ";
     }
 }
 
@@ -143,7 +148,7 @@ void ejercicio_3(){
         }
 
     }catch (char capturador) {
-        cout << "Error\n";
+        cout << "Error: ";
     }
 }
 void ejercicio_5(){
@@ -216,9 +221,13 @@ void ejercicio_7(){
 
         cout << "ingrese un numero mayor a 1: ";
         cin >> n_serie;
+
+        //Capturamos la excepción
         if(n_serie<2){
             throw '1';
         }
+
+        //Procedimiento de la serie
         while (n_serie > 0) {
             for(int i=2; i<=n_serie; i++){
                 if(fibo_2>=n_serie){
@@ -227,6 +236,8 @@ void ejercicio_7(){
                 }
                 fibo_2 = fibo_1 + fibo_2;
                 fibo_1 = fibo_2 - fibo_1;
+
+                //Sumamos todos los numeros pares de la serie
                 if((fibo_2%2)==0){
                     suma_fibo = suma_fibo + fibo_2;
                 }
@@ -256,11 +267,45 @@ void ejercicio_8(){
     */
     try {
         cout << "********* Ejercicio 8 *********"<<endl<<endl;
-        throw '1';
 
+        int a,b,c, total=0;
+
+        cout << "Ingrese el valor de A:";
+        cin >> a;
+        cout << "Ingrese el valor de B:";
+        cin >> b;
+        cout << "Ingrese el valor de C:";
+        cin >> c;
+
+        if(a<c && b<c){
+            total += Sumar_multiplos(a,c);
+            //cout <<total<<endl<<endl;
+            total += Sumar_multiplos(b,c);
+            //cout <<total<<endl<<endl;
+
+            int multiplicador=1;
+
+            while ((a*b*multiplicador)<c) {
+                total -= a*b*multiplicador;
+                multiplicador++;
+            }
+
+        }else if(a>c){
+            total += Sumar_multiplos(b,c);
+
+        }else if(b>c){
+            total += Sumar_multiplos(a,c);
+
+        }else{
+            throw '1';
+        }
+        cout << " = "<<total<<endl<<endl;
     }catch (char capturador) {
-        cout << "Access denied - You must be at least 18 years old.\n";
-        //cout << "Error number: " << capturador;
+        cout << "Error: ";
+        if(capturador=='1'){
+            cout << "El numero A y B son mayores que el numero C"<<endl;
+        }
+
     }
 }
 
@@ -286,8 +331,8 @@ void ejercicio_10(){
         }
 
     }catch (char capturador) {
-        //cout << "Access denied - You must be at least 18 years old.\n";
-        //cout << "Error number: " << capturador;
+        cout << "Error: ";
+
     }
 }
 
@@ -299,11 +344,40 @@ void ejercicio_12(){
     */
     try {
         cout << "********* Ejercicio 12 *********"<<endl<<endl;
-        throw '1';
+
+        int numero, maximo = 0;
+        int nu_primo = 0;
+
+        cout << "Ingrese un numero: ";
+        cin >> numero;
+        cout << endl<<endl;
+
+        for(int i=2; i>0; i++){
+            if(es_primo(i)==1){
+                nu_primo++;
+
+                //Cuando finaliza la vusqueda
+                if(i>numero){
+                    cout << "El mayor factor primo de "<< numero<<" es: "  << maximo<< endl;
+                    break;
+                }
+
+                //Se evalua constantemente el multiplo del numero primo
+                if(numero>nu_primo){
+                    if(numero%nu_primo ==0){
+                        //cout << "XD"<<endl;
+                        maximo = nu_primo;
+                    }
+                    //El Numero primo es i
+                }
+            }
+        }
+
+
 
     }catch (char capturador) {
-        cout << "Access denied - You must be at least 18 years old.\n";
-        //cout << "Error number: " << capturador;
+        cout << "Error: ";
+
     }
 }
 
@@ -314,7 +388,7 @@ void ejercicio_13(){
     Nota: la salida del programa debe ser: El resultado de la suma es: 17.
     */
     try {
-        cout << "********* Ejercicio 3 *********"<<endl<<endl;
+        cout << "********* Ejercicio 13 *********"<<endl<<endl;
         int nu_primo, m, sumar_primo;
         sumar_primo = 0;
         nu_primo = 0;
@@ -329,9 +403,8 @@ void ejercicio_13(){
                 }
                 if(m>nu_primo){
                     sumar_primo = sumar_primo + i;
-                    //cout << i << endl; Numero primo
+                    //El Numero primo es i
                 }
-
             }
         }
 
@@ -379,12 +452,57 @@ void ejercicio_15(){
 
 void ejercicio_17(){
     try {
+        cout << "********* Ejercicio 17 *********"<<endl<<endl;
 
-        throw '1';
+        int numero, igual;
+
+        cout << "Ingrese un numero: ";
+        cin >> numero;
+
+        if(numero==1){
+
+        }else if (numero>1){
+            //Secuencia triangular sin la formula n*(n+1)/2.
+            //solo para imprimir en pantalla y comprobar el proceso
+
+            for(int i=1;i<=numero;i++){
+                if(i==1){
+                    i++;
+                    igual = 1;
+                }
+                cout << i << " + " << igual<<" = "<<i+igual<<endl;
+                igual += i;
+
+            }
+
+            cout << "-*-*-*-*-*-*--*-"<<endl;
+            //usamos la formular esta vez
+            //int numero_n = igual;
+            int numero_n = numero*(numero+1)/2;
+            cout << "El "<<numero<<" numero triangular es: "<< numero_n << endl;
+
+            //Buscamos sus multiplos
+            cout << numero_n<<": ";
+            int contador=0;
+            for(int i=1;i<=numero_n; i++){
+                if(numero_n%i == 0){
+                    cout <<i<<", ";
+                    contador++;
+                }
+            }
+            cout <<endl;
+            cout << "Posee "<< contador-1 <<" Divisores diferentes de 1"<< endl;
+
+        }else{
+            throw '1';
+        }
+
 
     }catch (char capturador) {
-        cout << "Access denied - You must be at least 18 years old.\n";
-        //cout << "Error number: " << capturador;
+        cout << "Error: ";
+        if(capturador=='1'){
+            cout << "El numero debe ser mayor a 1";
+        }
     }
 }
 
@@ -426,4 +544,27 @@ float raizC(float m){
     }
 
     return x2;
+}
+int Sumar_multiplos(int numero, int limite){
+    int arreglo[limite];
+    int encontrado=0;
+    int suma=0;
+
+    for(int i=1; i<=limite; i++){
+        if((numero*i)<=limite){
+            encontrado=i;
+            arreglo[i]= numero*i;
+        }
+    }
+    for(int i=1; i<=encontrado; i++){
+        if(i<=encontrado){
+            cout << arreglo[i] << " ";
+            suma += arreglo[i];
+        }else{
+            arreglo[i]=0;
+        }
+
+    }
+    //cout << suma<<" del #: "<<numero<<endl;
+    return suma;
 }
