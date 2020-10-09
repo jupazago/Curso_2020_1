@@ -5,9 +5,9 @@ using namespace std;
 //Grupo 4 (6-7)  2,3,5,7,10,11,13,14,16,17
 void ejercicio_2();//R
 void ejercicio_3();//R
-void ejercicio_5();
+void ejercicio_5();//R
 void ejercicio_7();//R
-void ejercicio_10();
+void ejercicio_10();//R
 void ejercicio_11();//R
 void ejercicio_13();//R
 void ejercicio_14();//R
@@ -18,6 +18,8 @@ char fun_convertir(int *a);
 char fun_convertir2(int a);
 void funcion_cine1();
 int funcion_galaxia(int *a);
+int valor(char r);
+int fun_romano(char numero[], int cifras);
 
 int main()
 {
@@ -49,7 +51,7 @@ int main()
                     break;
 
                 case 10: puts("Se ha pulsado el Ejercicio 10 \n");
-                    //ejercicio_10();
+                    ejercicio_10();
                     break;
 
                 case 11: puts("Se ha pulsado el Ejercicio 11 \n");
@@ -237,16 +239,33 @@ void ejercicio_5(){
     cout << "Ingrese el numero a convertir: ";
     cin >> n_convertir;
 
-    char caracter = fun_convertir(p_n_convertir);
-
-    cout << endl<< "La cadena es: "<< caracter<<endl<<endl;
+    cout << endl<< "La cadena es: "<< fun_convertir(p_n_convertir)<<endl<<endl;
 }
 
 char fun_convertir(int *a){
-    char retorno;
-    retorno = *a-48;
+    int cifras = 1;
+    int copia = *a;
+    int residuo = 0;
 
-    return retorno;
+    while (copia>9) {
+        copia /= 10;
+        cifras++;
+    }
+
+    char retorno[cifras];
+    copia = *a;
+
+    for(int i=cifras-1; i>=0; i--){
+        residuo = copia%10;
+        copia /=10;
+        retorno[i]=residuo+48;
+    }
+    cout << retorno;
+
+
+
+
+    return retorno[cifras];
 }
 
 void ejercicio_7(){
@@ -281,6 +300,75 @@ void ejercicio_7(){
         }
     }
     cout << endl;
+}
+
+void ejercicio_10(){
+    char numero[30];
+    int cifras=0;
+
+    cout << "Ingrese el numero en ROMANO: ";
+    cin >> numero;
+
+    for(int i=0; i<30; i++){
+        if(numero[i]!= '\0'){
+            cifras++;
+        }else{
+            break;
+        }
+    }
+
+
+    cout << "El numero romano es: " << fun_romano(numero,cifras) << endl;
+}
+
+int valor(char r)
+{
+    if (r == 'I')
+        return 1;
+    if (r == 'V')
+        return 5;
+    if (r == 'X')
+        return 10;
+    if (r == 'L')
+        return 50;
+    if (r == 'C')
+        return 100;
+    if (r == 'D')
+        return 500;
+    if (r == 'M')
+        return 1000;
+
+    return -1;
+}
+
+int fun_romano(char numero[], int cifras){
+
+
+    int res = 0;
+    for (int i = 0; i < cifras; i++) {
+        // simbolo de i
+        int n1 = valor(numero[i]);
+
+        if (i + 1 < cifras) {
+            // obtener el valor i+1
+            int n2 = valor(numero[i + 1]);
+
+            // Comparing both values
+            if (n1 >= n2) {
+                //actual comparandolo al siguiente
+                res = res + n1;
+            }
+            else {
+                // Valor del simbolo actual
+                res = res + n2 - n1;
+                i++;
+            }
+        }
+        else {
+            res = res + n1;
+        }
+    }
+    return res;
 }
 
 void ejercicio_11(){
