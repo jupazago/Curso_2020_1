@@ -19,7 +19,7 @@ void fun_deco_metodo_1(int semilla);
 
 
 void fun_deco_metodo_2(int semilla);
-
+string fun_a_decodificar2(string cadena_codificada, int semilla);
 
 int main()
 {
@@ -32,7 +32,7 @@ int main()
     while (true) {
         cout << "1- Codificar" << endl;
         cout << "2- Aplicacion" << endl;
-        cout << "2- Decodificar" << endl;
+        cout << "3- Decodificar" << endl;
         cout << "Opcion: ";
         cin >> opcion;
         switch (opcion) {
@@ -91,7 +91,7 @@ void fun_metodo_1(int semilla){
         while(!fileRead_texto.eof()){ //mientras no sea el final del archivo
             getline(fileRead_texto, cadena_texto);
         }
-
+        fileRead_texto.close();
         string cadena_binaria;
         system("cls");
         for (size_t i = 0; i < cadena_texto.size(); ++i){
@@ -218,7 +218,7 @@ void fun_metodo_2(int semilla){
         while(!fileRead_texto.eof()){ //mientras no sea el final del archivo
             getline(fileRead_texto, cadena_texto);
         }
-
+        fileRead_texto.close();
         string cadena_binaria;
         system("cls");
         for (size_t i = 0; i < cadena_texto.size(); ++i){
@@ -316,10 +316,196 @@ void decodificar(){
     }
 }
 
+void fun_deco_metodo_1(int semilla){
+    //xd
+}
+
+void fun_deco_metodo_2(int semilla){
+    try {
+        ifstream fileRead_texto;  //Puedo crear el flujo lectura desde un archivo
+
+        fileRead_texto.open("../archivo_codificado.txt", ios::in); //abro archivo para su lectura
+        if(!fileRead_texto.is_open()){
+            throw '2';
+        }
+
+        string cadena_codificada;
+
+        while(!fileRead_texto.eof()){ //mientras no sea el final del archivo
+            getline(fileRead_texto, cadena_codificada);
+        }
+
+        fileRead_texto.close();
+        system("cls");
+
+        int tamanio = cadena_codificada.size();
+        string cadena_binaria = fun_a_decodificar2(cadena_codificada, semilla);
 
 
+        cout << "----------"<<endl;
+
+        for(int i=0; i<(tamanio/8); i++){
+            cout << cadena_binaria[i];
+        }
+
+        cout << "----------"<<endl;
+        cout << endl;
+
+    } catch (...) {
+        cout <<"ERROR"<<endl;
+    }
+}
+
+string fun_a_decodificar2(string cadena_codificada, int semilla){
+    int tamanio = cadena_codificada.size();
+    int cambio = 0;
+    int aux_evaluar = 1;
+    int regresa = semilla-1;
+    char arreglo_binario1[tamanio];
+    int cont = 0;
+
+    string segundo_paso1, segundo_paso;
 
 
+    for(int i=0; i<tamanio;i++){
+        segundo_paso1[aux_evaluar-1]=cadena_codificada[i];
+        //cout <<texto_cifrado[i];
+        if(aux_evaluar == semilla){
+            aux_evaluar = 0;
+            for(int j=0;j<semilla;j++){
+                if(cambio==0 && j==0){
+                    cambio = 1;
+                    if(segundo_paso1[j]=='0'){
+                        segundo_paso[regresa]= '0';
+                        //cout << segundo_paso1[j];
+                        arreglo_binario1[i-regresa] = '0';
+                        regresa--;
+                    }else if(segundo_paso1[j]=='1'){
+                        //cout << segundo_paso1[j];
+                        segundo_paso[regresa]= '1';
+                        arreglo_binario1[i-regresa] = '1';
+                        regresa--;
+                    }
+                }else{
+                    if(segundo_paso1[j]=='0'){
+                        segundo_paso[j-1]= '0';
+                        //cout << segundo_paso1[j];
+                        arreglo_binario1[i-regresa] = '0';
+                        regresa--;
+                    }else if(segundo_paso1[j]=='1'){
+                        //cout << segundo_paso1[j];
+                        segundo_paso[j-1]= '1';
+                        arreglo_binario1[i-regresa] = '1';
+                        regresa--;
+                    }
+                }
+            }
+            regresa=semilla-1;
+            for(int j=0;j<semilla;j++){
+                //cout << segundo_paso[j];
+                if(segundo_paso[j]=='0'){
+                    arreglo_binario1[i-regresa] = '0';
+                }else if(segundo_paso[j]=='1'){
+                    arreglo_binario1[i-regresa] = '1';
+                }
+
+                regresa--;
+            }
+
+            cambio = 0;
+            //cout << " ";
+            regresa=semilla-1;
+
+        }
+        aux_evaluar++;
+        //cout <<endl<< i<<endl;
+    }
+    cout<< endl<<endl<<endl;
+    regresa = semilla-1;
+    cout<< endl;
+    int contador=0;
+    int contador2=0;
+    char arreglo_binarioo[tamanio];
+    char num;
+    char arreglo_auxiliar[8];
+    for(int i=0; i<tamanio;i++){
+        arreglo_auxiliar[contador]=arreglo_binario1[i];
+        //cout << arreglo_binario1[i];
+        if(contador==7){
+            contador=-1;
+            for(int j=7; j>=0;j--){
+                //cout << arreglo_auxiliar[j];
+                if(j==7){
+                    if(arreglo_auxiliar[7]=='0'){
+                        num = num+(0*1);
+                    }else if(arreglo_auxiliar[7]=='1'){
+                        num = num+(1*1);
+                    }
+                }else if(j==6){
+                    if(arreglo_auxiliar[6]=='0'){
+                        num = num+(0*2);
+                    }else if(arreglo_auxiliar[6]=='1'){
+                        num = num+(1*2);
+                    }
+                }else if(j==5){
+                    if(arreglo_auxiliar[5]=='0'){
+                        num = num+(0*4);
+                    }else if(arreglo_auxiliar[5]=='1'){
+                        num = num+(1*4);
+                    }
+                }else if(j==4){
+                    if(arreglo_auxiliar[4]=='0'){
+                        num = num+(0*8);
+                    }else if(arreglo_auxiliar[4]=='1'){
+                        num = num+(1*8);
+                    }
+                }else if(j==3){
+                    if(arreglo_auxiliar[3]=='0'){
+                        num = num+(0*16);
+                    }else if(arreglo_auxiliar[3]=='1'){
+                        num = num+(1*16);
+                    }
+                }else if(j==2){
+                    if(arreglo_auxiliar[2]=='0'){
+                        num = num+(0*32);
+                    }else if(arreglo_auxiliar[2]=='1'){
+                        num = num+(1*32);
+                    }
+                }else if(j==1){
+                    if(arreglo_auxiliar[1]=='0'){
+                        num = num+(0*64);
+                    }else if(arreglo_auxiliar[1]=='1'){
+                        num = num+(1*64);
+                    }
+                }else if(j==0){
+                    if(arreglo_auxiliar[0]=='0'){
+                        num = num+(0*128);
+                    }else if(arreglo_auxiliar[0]=='1'){
+                        num = num+(1*128);
+                    }
+                }else{
+                    throw '2';
+                }
+
+            }
+            arreglo_binarioo[contador2]=num;
+            contador2=contador2+1;
+            //cout << num << " ";
+            num=0;
+        }
+        contador++;
+    }
+    cout << endl<<endl;
+    string final;
+
+    //division por 8, es la cantidad de bits que tiene un byte, osea cada letra
+    for(int i=0; i<(tamanio/8);i++){
+        final[i] = arreglo_binarioo[i];
+        //cout << arreglo_binarioo[i];
+    }
+    cout << endl;
+    return final;
+}
 
 
 
