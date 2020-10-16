@@ -7,10 +7,19 @@ using namespace std;
 
 void ejercicios();
 void aplicacion();
+void decodificar();
 
 void fun_metodo_1(int semilla);
-string fun_a_codificar(string cadena_binaria, int semilla);
-void fun_metodo_2();
+string fun_a_codificar1(string cadena_binaria, int semilla);
+
+void fun_metodo_2(int semilla);
+string fun_a_codificar2(string cadena_binaria, int semilla);
+
+void fun_deco_metodo_1(int semilla);
+
+
+void fun_deco_metodo_2(int semilla);
+
 
 int main()
 {
@@ -21,18 +30,23 @@ int main()
 
 
     while (true) {
-        cout << "1- Ejercicios" << endl;
+        cout << "1- Codificar" << endl;
         cout << "2- Aplicacion" << endl;
+        cout << "2- Decodificar" << endl;
         cout << "Opcion: ";
         cin >> opcion;
         switch (opcion) {
 
-            case 1: puts("Ejercicios \n");
+            case 1: puts("Codificar \n");
                 ejercicios();
                 break;
 
-            case 2: puts("Aplicación \n");
+            case 2: puts("Aplicacion \n");
                 //aplicacion();
+                break;
+
+            case 3: puts("Decodificar \n");
+                decodificar();
                 break;
 
             default: puts("Error, selecciona una opcion valida \n");
@@ -52,7 +66,7 @@ void ejercicios(){
             fun_metodo_1(semilla);
 
         }else if(metodo== 2){
-            //fun_metodo_2();
+            fun_metodo_2(semilla);
 
         }else{
             throw 505;
@@ -87,7 +101,7 @@ void fun_metodo_1(int semilla){
         //cout <<endl<< cadena_binaria<<endl;
         cout << endl;
         int tamanio = cadena_binaria.size();
-        string cadena_codificada = fun_a_codificar(cadena_binaria, semilla);
+        string cadena_codificada = fun_a_codificar1(cadena_binaria, semilla);
         cout << "----------"<<endl;
         for(int i=0; i<tamanio; i++){
             cout << cadena_codificada[i];
@@ -104,7 +118,7 @@ void fun_metodo_1(int semilla){
     }
 }
 
-string fun_a_codificar(string cadena_binaria, int semilla){
+string fun_a_codificar1(string cadena_binaria, int semilla){
     int tamanio = cadena_binaria.size();
     string cadena_codificada;
 
@@ -190,8 +204,125 @@ string fun_a_codificar(string cadena_binaria, int semilla){
 }
 
 
-void fun_metodo_2(){
+void fun_metodo_2(int semilla){
+    try {
+        ifstream fileRead_texto;  //Puedo crear el flujo lectura desde un archivo
 
+        fileRead_texto.open("../archivo_texto.txt", ios::in); //abro archivo para su lectura
+        if(!fileRead_texto.is_open()){
+            throw '2';
+        }
+
+        string cadena_texto;
+
+        while(!fileRead_texto.eof()){ //mientras no sea el final del archivo
+            getline(fileRead_texto, cadena_texto);
+        }
+
+        string cadena_binaria;
+        system("cls");
+        for (size_t i = 0; i < cadena_texto.size(); ++i){
+            cadena_binaria.append((bitset<8>(cadena_texto.c_str()[i])).to_string());
+            //cout << bitset<8>(cadena_texto[i])<<" ";
+        }
+        cout << endl;
+        int tamanio = cadena_binaria.size();
+        string cadena_codificada = fun_a_codificar2(cadena_binaria, semilla);
+        cout << "----------"<<endl;
+        for(int i=0; i<tamanio; i++){
+            cout << cadena_codificada[i];
+        }
+        cout << "----------"<<endl;
+        cout << endl;
+
+
+
+
+
+    } catch (...) {
+        cout <<"ERROR"<<endl;
+    }
 }
+
+string fun_a_codificar2(string cadena_binaria, int semilla){
+    int aux_evaluar = 1;
+    int tamanio = cadena_binaria.size();
+    int cambio = 0;
+    int regresa = semilla;
+    char arreglo_binario3[tamanio];
+    char segundo_paso1[semilla];
+    char segundo_paso2[semilla];
+
+    for(int i=0; i<tamanio;i++){
+        segundo_paso1[aux_evaluar-1] = cadena_binaria[i];
+        if(aux_evaluar == semilla){
+            aux_evaluar = 0;
+            for(int j=0;j<semilla;j++){
+                if(cambio==0 && j==0){
+                    cambio = 1;
+                    if(segundo_paso1[semilla-1]=='0'){
+                        segundo_paso2[j]= '0';
+                        arreglo_binario3[i-regresa+1] = '0';
+                        regresa--;
+                    }else if(segundo_paso1[semilla-1]=='1'){
+                        segundo_paso2[j]= '1';
+                        arreglo_binario3[i-regresa+1] = '1';
+                        regresa--;
+                    }
+                }else{
+                    if(segundo_paso1[j-1]=='0'){
+                        segundo_paso2[j]= '0';
+                        arreglo_binario3[i-regresa+1] = '0';
+                        regresa--;
+                    }else if(segundo_paso1[j-1]=='1'){
+                        segundo_paso2[j]= '1';
+                        arreglo_binario3[i-regresa+1] = '1';
+                        regresa--;
+                    }
+                }
+            }
+            cambio = 0;
+            regresa=semilla;
+        }
+        aux_evaluar++;
+    }
+    string cadena_codificada;
+    for(int i=0; i<tamanio;i++){
+        cadena_codificada[i] = arreglo_binario3[i];
+    }
+
+    return  cadena_codificada;
+}
+
+void decodificar(){
+    int semilla, metodo;
+    cout << "Seleccione la semilla: ";
+    cin >> semilla;
+    cout << "Metodo para decodificar: ";
+    cin >> metodo;
+    try {
+        if(metodo == 1){
+            fun_deco_metodo_1(semilla);
+
+        }else if(metodo== 2){
+            fun_deco_metodo_2(semilla);
+
+        }else{
+            throw 505;
+
+        }
+    } catch (...) {
+        cout << "Error - seleccione un metodo valido."<<endl;
+    }
+}
+
+
+
+
+
+
+
+
+
 
 
