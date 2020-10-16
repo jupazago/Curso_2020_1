@@ -11,7 +11,7 @@ void ejercicio_10();//R
 void ejercicio_11();//R
 void ejercicio_13();//R
 void ejercicio_14();//R
-void ejercicio_16();
+void ejercicio_16();//R
 void ejercicio_17();
 
 char fun_convertir(int *a);
@@ -67,11 +67,11 @@ int main()
                     break;
 
                 case 16: puts("Se ha pulsado el Ejercicio 16 \n");
-                    //ejercicio_16();
+                    ejercicio_16();
                     break;
 
                 case 17: puts("Se ha pulsado el Ejercicio 17 \n");
-                    //ejercicio_17();
+                    ejercicio_17();
                     break;
 
                 default: puts("Error, selecciona una opcion valida \n");
@@ -338,7 +338,7 @@ int valor(char r)
     if (r == 'M')
         return 1000;
 
-    return -1;
+    return -1; //Cantidad de letras que no son parte de los numeros romanos
 }
 
 int fun_romano(char numero[], int cifras){
@@ -353,7 +353,7 @@ int fun_romano(char numero[], int cifras){
             // obtener el valor i+1
             int n2 = valor(numero[i + 1]);
 
-            // Comparing both values
+            // Comparando los valores
             if (n1 >= n2) {
                 //actual comparandolo al siguiente
                 res = res + n1;
@@ -565,3 +565,85 @@ void ejercicio_14(){
         cout << endl;
     }
 }
+
+void ejercicio_16(){
+    int numero;
+    cout << "ingrese la dimension de la cuadricula: ";
+    cin >> numero;
+
+
+   //Formula:
+    //Numerador --> (A+D)!
+    //Denominador-> A!D!
+    int numerador = 1;
+
+    //Numerador
+    for(int i=1; i<=(numero+numero); i++){
+        numerador *= i;
+    }
+
+    //Denominador
+    int denominador=1;
+
+    //Factorial de A y D
+    for(int i=1; i<=numero; i++){
+        denominador *= i;
+    }
+
+
+    int resultado = numerador/(denominador*denominador);
+
+    cout << "Para la malla de "<<numero<<"x"<<numero<<" puntos hay "<<resultado<<" caminos"<<endl;
+
+
+}
+
+
+void ejercicio_17(){
+    int numero_inicio, suma, suma_total=0;
+    int numero_auxiliar = 0, contador=0;;
+
+    cout<<"Ingresa un numero: ";
+    cin >> numero_inicio;
+
+    try {
+        while (numero_inicio!=numero_auxiliar && contador<20) {
+
+            if(contador==0){
+                numero_auxiliar = numero_inicio;
+                suma = 0;
+            }else{
+                suma = 0;
+            }
+
+
+            for(int i=1;i<numero_auxiliar ;i++){
+                if(numero_auxiliar%i == 0){
+                    suma += i;
+                }
+            }
+            if(suma<numero_inicio){
+                suma_total += suma;
+            }
+            numero_auxiliar = suma;
+            contador++;
+            cout << endl<<numero_auxiliar<<endl;
+
+            if(numero_auxiliar==0){
+                break;
+            }
+        }
+        cout << endl<<endl<<"El resultado de la suma es: "<<suma_total<<endl;
+    } catch (char error) {
+        cout << "Error: ";
+    }
+
+}
+
+
+
+
+
+
+
+
