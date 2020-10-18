@@ -461,7 +461,12 @@ void funcion_cine1(){
 }
 
 void ejercicio_13(){
-    int matriz_galaxia[6][8]={{0,3,4,0,0,0,6,8},{5,13,6,0,0,0,2,3},{2,6,2,7,3,0,10,0},{0,0,4,15,4,1,6,0},{0,0,7,12,6,9,10,4},{5,0,6,10,6,4,8,0}};
+    int matriz_galaxia[6][8]={{0,3,4,0,0,0,6,8},
+                              {5,13,6,0,0,0,2,3},
+                              {2,6,2,7,3,0,10,0},
+                              {0,0,4,15,4,1,6,0},
+                              {0,0,7,12,6,9,10,4}
+                              ,{5,0,6,10,6,4,8,0}};
     int *punt_galaxia = &matriz_galaxia[0][0];
     int promedio_galaxia;
 
@@ -475,9 +480,7 @@ int funcion_galaxia(int *a){
     int contador=0;
     int cont =0;
     cout << "Matriz de la galaxia NGC 1300" << endl << endl;
-
     //Imprimir la tabla
-
     for(int i=0; i<(6*8); i++){
         if(*(a+i)>9){
             cout << *(a+i) << "| ";

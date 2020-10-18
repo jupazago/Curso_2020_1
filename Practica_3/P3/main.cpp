@@ -6,7 +6,6 @@
 using namespace std;
 
 void ejercicios();
-void aplicacion();
 void decodificar();
 
 void fun_metodo_1(int semilla);
@@ -42,7 +41,7 @@ int main()
                 break;
 
             case 2: puts("Aplicacion \n");
-                //aplicacion();
+                cout << endl <<"Abrir el otro archivo main de apliacion"<<endl<<endl;
                 break;
 
             case 3: puts("Decodificar \n");
@@ -100,13 +99,20 @@ void fun_metodo_1(int semilla){
         }
         //cout <<endl<< cadena_binaria<<endl;
         cout << endl;
-        int tamanio = cadena_binaria.size();
+        //int tamanio = cadena_binaria.size();
         string cadena_codificada = fun_a_codificar1(cadena_binaria, semilla);
+
+        /*
+         *
+         * Imprimir la cadena codificada del metodo 1
+         *
         cout << "----------"<<endl;
         for(int i=0; i<tamanio; i++){
             cout << cadena_codificada[i];
         }
         cout << "----------"<<endl;
+
+        */
         cout << endl;
 
 
@@ -210,7 +216,7 @@ void fun_metodo_2(int semilla){
 
         fileRead_texto.open("../archivo_texto.txt", ios::in); //abro archivo para su lectura
         if(!fileRead_texto.is_open()){
-            throw '2';
+            throw 505;
         }
 
         string cadena_texto;
@@ -219,6 +225,8 @@ void fun_metodo_2(int semilla){
             getline(fileRead_texto, cadena_texto);
         }
         fileRead_texto.close();
+
+
         string cadena_binaria;
         system("cls");
         for (size_t i = 0; i < cadena_texto.size(); ++i){
@@ -228,14 +236,39 @@ void fun_metodo_2(int semilla){
         cout << endl;
         int tamanio = cadena_binaria.size();
         string cadena_codificada = fun_a_codificar2(cadena_binaria, semilla);
-        cout << "----------"<<endl;
+        char cad[tamanio];
+
+        /*
+         * Imprimir la cadena codificada del metodo 2
+         *
+         */
+        cout << "---------- codificado -----"<<endl;
         for(int i=0; i<tamanio; i++){
-            cout << cadena_codificada[i];
+            //cout << cadena_codificada[i];
+            cad[i] = cadena_codificada[i];
         }
         cout << "----------"<<endl;
+
+
         cout << endl;
 
+        ofstream escritura_metodo2;
+        string nombre_archivo= "../archivo_codificado.txt";
+        cout << "Nombre de archivo de salida codificado: "<<nombre_archivo<<endl;
 
+        escritura_metodo2.open((nombre_archivo),ios::out);//abriendo o creando el archivo
+        if(escritura_metodo2.fail()){
+            //Si hubo fallas, capturar la excepcion
+            throw 505;
+        }
+
+        //ingreso el arreglo al archivo .txt
+        for(int i=0; i<tamanio;i++){
+            //cout << cad[i];
+            escritura_metodo2 << cad[i];
+        }
+
+        escritura_metodo2.close();
 
 
 
@@ -341,15 +374,25 @@ void fun_deco_metodo_2(int semilla){
         int tamanio = cadena_codificada.size();
         string cadena_binaria = fun_a_decodificar2(cadena_codificada, semilla);
 
+        cout << endl;
 
-        cout << "----------"<<endl;
+        ofstream escritura_metodo2;
+        string nombre_archivo= "../archivo_resultado.txt";
+        cout << "Nombre de archivo de salida codificado: "<<nombre_archivo<<endl;
 
-        for(int i=0; i<(tamanio/8); i++){
-            cout << cadena_binaria[i];
+        escritura_metodo2.open((nombre_archivo),ios::out);//abriendo o creando el archivo
+        if(escritura_metodo2.fail()){
+            //Si hubo fallas, capturar la excepcion
+            throw '3';
         }
 
-        cout << "----------"<<endl;
-        cout << endl;
+        //ingreso el arreglo al archivo .txt
+        for(int i=0; i<tamanio/8;i++){
+            //cout << cadena_binaria[i];
+            escritura_metodo2 << cadena_binaria[i];
+        }
+
+        escritura_metodo2.close();
 
     } catch (...) {
         cout <<"ERROR"<<endl;
