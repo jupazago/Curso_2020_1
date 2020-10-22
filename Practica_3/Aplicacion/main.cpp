@@ -2,6 +2,7 @@
 #include <fstream> //eof
 #include <bitset>
 #include <iostream>
+#include <unistd.h>//Sleep
 
 using namespace std;
 
@@ -14,8 +15,9 @@ string fun_metodo_2(string cadena_texto, int semilla);
 string fun_a_codificar2(string cadena_binaria, int semilla);
 
 void registrar_usuario();
+void consultar_saldo_retirar(int valor);
 
-
+string procesos(string texto, bool *encontrado, string *p_usuario, string *p_clave, int seccion);
 
 
 int main()
@@ -53,19 +55,26 @@ int main()
         break;
         ///////////////////////////////////////////////
         case 2: puts("Consulta de saldo \n");
-            //consultar_saldo(2);
+            consultar_saldo_retirar(1);
         break;
         //////////////////////////////////////////////
         case 3: puts("Retirar dinero \n");
-            //consultar_saldo(3);
+            consultar_saldo_retirar(2);
         break;
         //////////////////////////////////////////////
         default:puts("Salir \n");
             iniciar=false;
         }
+        system("cls");
         cout <<endl<< "------------Menu-----------";
         cout <<endl<< "---------------------------";
-        cout <<endl<<"Tu opcion: ";
+        cout <<endl<< "1. Registrar Usuario";
+        cout <<endl<< "2. Consultar saldo";
+        cout <<endl<< "3. Retirar saldo";
+        cout <<endl<< "4. Cerrar sesion";
+        cout <<endl<< "---------------------------";
+        cout <<endl<< "NOTA: El servicio de la opcion 2. y 3. tiene un costo de $ 1.000 Pesos";
+        cout <<endl<<endl<<"Tu opcion: ";
         cin >> valor;
     }
 
@@ -331,19 +340,44 @@ void registrar_usuario(){
 
         string cadena_codificada = fun_metodo_2(datos, 4);
         int tamanio = cadena_codificada.size();
-        string cadena_codificada_final;
+
+        int contador=0;
+        //arreglo limpio
         for(int i=0; i<tamanio; i++){
-            if(cadena_codificada[i] == '1' && cadena_codificada[i] == '0'){
-                cadena_codificada_final[i] = cadena_codificada[i];
+            if(cadena_codificada[i] == '1' || cadena_codificada[i] == '0'){
+                contador++;//conocemos el verdadero tamanio del arreglo
+            }
+        }
+
+
+        char cadena_codificada_final[contador];
+        contador=0;
+        for(int i=0; i<tamanio; i++){
+            if(cadena_codificada[i] == '1' || cadena_codificada[i] == '0'){
+                cadena_codificada_final[contador] = cadena_codificada[i];
+                contador++;
             }
         }
 
         ofstream escritura;
-
         //guardar en el texto de base de datos
+
+
         escritura.open("../Data_Base.txt",ios::app);
-        for(int i=0;i<tamanio;i++){
-            escritura << cadena_codificada_final[i];
+        if(escritura.fail()){
+            //Si hubo fallas, capturar la excepcion
+            throw 505;
+        }
+        for(int i=0; i<contador; i++){
+            //cout <<         cadena_codificada_final[i];
+            //escritura <<    cadena_codificada_final[i];
+
+            if(cadena_codificada_final[i]=='0'){
+                escritura <<"0";
+            }else if(cadena_codificada_final[i]=='1'){
+                escritura <<"1";
+            }
+
         }
 
         escritura.close();
@@ -373,12 +407,12 @@ string fun_metodo_2(string cadena_texto, int semilla){
          * Imprimir la cadena codificada del metodo 2
          *
          */
-        cout << "---------- codificado -----"<<endl;
+        //cout << "---------- codificado -----"<<endl;
         for(int i=0; i<tamanio; i++){
             //cout << cadena_codificada[i];
             cad[i] = cadena_codificada[i];
         }
-        cout << "----------"<<endl;
+        //cout << "----------"<<endl;
 
 
         cout << endl;
@@ -390,6 +424,7 @@ string fun_metodo_2(string cadena_texto, int semilla){
         return "";
     }
 }
+
 string fun_a_codificar2(string cadena_binaria, int semilla){
     int aux_evaluar = 1;
     int tamanio = cadena_binaria.size();
@@ -398,7 +433,7 @@ string fun_a_codificar2(string cadena_binaria, int semilla){
     char arreglo_binario3[tamanio];
     char segundo_paso1[semilla];
     char segundo_paso2[semilla];
-    cout<<cadena_binaria<<"--"<<endl;
+    //cout<<cadena_binaria<<"--"<<endl;
 
 
     for(int i=0; i<tamanio;i++){
@@ -439,6 +474,307 @@ string fun_a_codificar2(string cadena_binaria, int semilla){
 
     return  cadena_codificada;
 }
+
+
+void consultar_saldo_retirar(int valor){
+    try {
+        bool quedarse[2]={false,false};
+        int tusuario, tclave;
+        string usuario, clave;
+        bool encontrado = false;
+
+
+        string cadena;
+
+        ifstream archivo;
+
+        archivo.open("../Data_Base.txt", ios::in); //abro archivo para su lectura
+        if(!archivo.is_open())
+            throw '1';
+
+        while(!archivo.eof()){ //mientras no sea el final del archivo
+            getline(archivo, cadena);
+        }
+        archivo.close();
+
+        string cadena_decodificada = fun_deco_metodo_2(cadena, 4);
+        cout << cadena_decodificada<<endl;
+
+        while(quedarse[0]==false){
+            cout<<endl<<"Ingrese el documento: ";
+            cin >> usuario;
+            tusuario = usuario.size();
+            if(tusuario>5 && tusuario<11){
+                quedarse[0]=true;
+            }else{
+                quedarse[0]=false;
+            }
+        }
+        while(quedarse[1]==false){
+            cout<<endl<<"Ingrese la clave: ";
+            cin >> clave;
+            tclave = clave.size();
+            if(tclave==4){
+                for(int i=0; i<tclave; i++){
+                    if(clave[i] != '0'
+                    && clave[i] != '1'
+                    && clave[i] != '2'
+                    && clave[i] != '3'
+                    && clave[i] != '4'
+                    && clave[i] != '5'
+                    && clave[i] != '6'
+                    && clave[i] != '7'
+                    && clave[i] != '8'
+                    && clave[i] != '9'){
+                        quedarse[1]=false;
+                        throw 505;
+                    }else{
+                        quedarse[1]=true;
+                    }
+                }
+            }else{
+                quedarse[1]=false;
+            }
+        }
+
+
+
+
+        //Si es consulta
+        if(valor==1){
+                                    //texto,  *encontrado,  *p_usuario,  *p_clave,  seccion
+            string saldo = procesos(cadena_decodificada, &encontrado, &usuario, &clave, 1);
+
+            int nsaldo = stoi(saldo);
+
+            if(encontrado == true && nsaldo>1000){
+                //se hace efectivo el cobro de 1000 pesos
+                nsaldo -= 1000;
+                cout <<endl<<"Su saldo actual es: "<< nsaldo <<endl<<endl;
+                                       //texto,  *encontrado,  *p_usuario,  *p_clave,  seccion
+                string saldo = procesos(cadena_decodificada, &encontrado, &usuario, &clave, 2);
+
+            }else if(nsaldo<=1000){
+                nsaldo = 0;
+                cout <<endl<<"Su saldo actual es: "<< nsaldo <<endl<<endl;
+                                        //texto,  *encontrado,  *p_usuario,  *p_clave,  seccion
+                string saldo = procesos(cadena_decodificada, &encontrado, &usuario, &clave, 2);
+
+            }else if(encontrado == false){
+
+                 cout << endl << "Respuesta: " << nsaldo << endl << endl;
+            }
+            usleep(5000000);    // Esperar 5 segundos
+
+        }else if(valor==2){
+            //Si es retiro
+
+            //texto,  *encontrado,  *p_usuario,  *p_clave,  seccion
+            string saldo = procesos(cadena_decodificada, &encontrado, &usuario, &clave, 3);
+
+            usleep(5000000);    // Esperar 5 segundos
+        }
+    } catch (...) {
+
+    }
+}
+
+string procesos(string texto, bool *encontrado, string *usuario, string *clave, int seccion){
+    string espacio=" ";
+
+    if(seccion == 1){
+        /*
+         * Consultares si existe el usuario en nuetros datos y si conincide con la clave
+         * Si todo marcha bien se retorna el saldo
+         * Caso contrario, retornar el error
+        */
+
+        //string texto2 = *p_texto;
+        string buscar = *usuario+espacio;
+        //cout << endl<< buscar <<endl;
+        int tamano_cedula = buscar.size();
+
+        size_t pos1 = texto.find(buscar);
+        string temporal1 = texto.substr(pos1);
+        //cout << pos1<<endl<<endl;
+        string clave_consulta = temporal1.substr(tamano_cedula,4);
+        //cout <<endl<<clave_consulta<<endl;
+        temporal1=temporal1.substr(tamano_cedula+5);
+        //cout <<endl<<temporal1<<endl;
+        size_t n = temporal1.find(" ");
+        string dinero = temporal1.substr(0,n);
+        //cout <<"En la posicion "<< n << endl<<endl;
+        //cout <<"Cedula: "<< buscar << endl<<endl;
+        //cout <<"Clave: "<< clave_consulta << endl<<endl;
+        //cout <<"$"<< dinero << endl<<endl;
+        if(clave_consulta == *clave){
+            *encontrado = true;
+            return dinero;
+        }else {
+            return "Clave erronea";
+        }
+
+    }else if (seccion == 2) {
+        string texto2   = texto;
+        string buscar   = *usuario+espacio;
+        int tamano_cedula = buscar.size();
+        size_t pos1     = texto2.find(buscar);
+        string temporal1= texto2.substr(pos1);
+        string clave_consulta = temporal1.substr(tamano_cedula, 4);
+        temporal1       = temporal1.substr(tamano_cedula+5);
+        size_t n        = temporal1.find(" ");
+        string dinero   = temporal1.substr(0,n);
+        string d_viejo  = dinero;
+        //cout << "viejo saldo" << dinero<<endl;
+
+        //convierte a int y viceversa
+        int nsaldo = stoi(dinero);
+        nsaldo -=1000;
+        if(nsaldo <1000){
+            nsaldo =0;
+        }
+        //cout << endl << "$" << nsaldo<< endl;
+        dinero = to_string(nsaldo);
+        //Divido el arreglo en segemento, se encuentra el dinero respectivo
+        //y se reemplaza para luego cifrar y actualizar la base de datos
+        size_t pos2 = texto2.find(buscar);
+        string temporal2 = texto2.substr(0,pos2);//primera mitad
+        string temporal3 = texto2.substr(pos2);//segunda mitad
+        size_t pos3 = temporal3.find(d_viejo); // posicion de dinero
+        size_t t_dinero = dinero.size(); //tamano de dinero
+        temporal3.replace(pos3,t_dinero,dinero); // reemplazo
+        texto2 = temporal2+temporal3;
+        //cout <<endl<< texto2<<endl; //texto modificado exitosamente
+
+        //////////////
+        string cadena_codificada = fun_metodo_2(texto2, 4);
+        int tamanio = cadena_codificada.size();
+
+        int contador=0;
+        //arreglo limpio, evitar errores
+        for(int i=0; i<tamanio; i++){
+            if(cadena_codificada[i] == '1' || cadena_codificada[i] == '0'){
+                contador++;//conocemos el verdadero tamanio del arreglo
+            }
+        }
+
+        char cadena_codificada_final[contador];
+        contador=0;
+        for(int i=0; i<tamanio; i++){
+            if(cadena_codificada[i] == '1' || cadena_codificada[i] == '0'){
+                cadena_codificada_final[contador] = cadena_codificada[i];
+                contador++;
+            }
+        }
+
+
+        ////////////
+        ofstream escritura;
+        //guardar en el texto de base de datos
+
+        escritura.open("../Data_Base.txt",ios::out);
+        if(escritura.fail()){
+            //Si hubo fallas, capturar la excepcion
+            throw 505;
+        }
+        for(int i=0; i<contador; i++){
+            if(cadena_codificada_final[i]=='0'){
+                escritura <<"0";
+            }else if(cadena_codificada_final[i]=='1'){
+                escritura <<"1";
+            }
+
+        }
+        escritura.close();
+        return "Exito al guardar";
+    }else if(seccion == 3){
+
+        string texto2   = texto;
+        string buscar   = *usuario+espacio;
+        int tamano_cedula= buscar.size();
+        size_t pos1     = texto2.find(buscar);
+        string temporal1= texto2.substr(pos1);
+        string clave_consulta = temporal1.substr(tamano_cedula,4);
+        temporal1       = temporal1.substr(tamano_cedula+5);
+        size_t n        = temporal1.find(" ");
+        string dinero   = temporal1.substr(0,n);
+        string d_viejo  = dinero;
+
+
+        //convierte a int y viceversa
+        int nsaldo = stoi(dinero);
+        int retirar;
+        cout << "Ingrese saldo a retirar: ";
+        cin >> retirar;
+
+        if(nsaldo-(retirar+1000)>1001){
+            nsaldo-=1000;
+            nsaldo-=retirar;
+            cout << endl << "$" << nsaldo<< endl;
+            dinero = to_string(nsaldo);
+            //Divido el arreglo en segemento, se encuentra el dinero respectivo
+            //y se reemplaza para luego cifrar y actualizar la base de datos
+            size_t pos2 = texto2.find(buscar);
+            string temporal2 = texto2.substr(0,pos2);//primera mitad
+            string temporal3 = texto2.substr(pos2);//segunda mitad
+            size_t pos3 = temporal3.find(d_viejo); // posicion de dinero
+            size_t t_dinero = dinero.size(); //tamano de dinero
+            temporal3.replace(pos3,t_dinero,dinero); // reemplazo
+            texto2=temporal2+temporal3;
+            //cout <<endl<< texto2<<endl;
+
+
+            string cadena_codificada = fun_metodo_2(texto2, 4);
+            int tamanio = cadena_codificada.size();
+
+            int contador=0;
+            //arreglo limpio, evitar errores
+            for(int i=0; i<tamanio; i++){
+                if(cadena_codificada[i] == '1' || cadena_codificada[i] == '0'){
+                    contador++;//conocemos el verdadero tamanio del arreglo
+                }
+            }
+
+            char cadena_codificada_final[contador];
+            contador=0;
+            for(int i=0; i<tamanio; i++){
+                if(cadena_codificada[i] == '1' || cadena_codificada[i] == '0'){
+                    cadena_codificada_final[contador] = cadena_codificada[i];
+                    contador++;
+                }
+            }
+
+
+
+            ofstream escritura;
+            //guardar en el texto de base de datos
+
+            escritura.open("../Data_Base.txt",ios::out);
+            if(escritura.fail()){
+                //Si hubo fallas, capturar la excepcion
+                throw 505;
+            }
+            for(int i=0; i<contador; i++){
+                if(cadena_codificada_final[i]=='0'){
+                    escritura <<"0";
+                }else if(cadena_codificada_final[i]=='1'){
+                    escritura <<"1";
+                }
+
+            }
+            escritura.close();
+
+            cout << "Retiro exitoso de : $" << retirar << endl;
+            return "Retiro exitoso";
+        }else{
+
+            return "Saldo insuficiente";
+        }
+    }else {
+        return " ";
+    }
+}
+
 
 
 

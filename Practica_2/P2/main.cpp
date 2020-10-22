@@ -355,11 +355,17 @@ int fun_romano(char numero[], int cifras){
 
             // Comparando los valores
             if (n1 >= n2) {
+                //Si un carácter esta seguido por uno de igual o menor valor,
+                //su valor se suma al total.
+
                 //actual comparandolo al siguiente
                 res = res + n1;
             }
             else {
+                //Si un carácter esta seguido por uno de mayor valor,
+                //su valor se resta del total.
                 // Valor del simbolo actual
+
                 res = res + n2 - n1;
                 i++;
             }
@@ -501,7 +507,7 @@ int funcion_galaxia(int *a){
             continue;
         }else{
             promedio = (*(a+i) + *(a+(i-1)) + *(a+(i+1)) + *(a+(i-8)) + *(a+(i+8)))/5;
-            if(promedio >=6.0){
+            if(promedio >6.0){
                 contador++;
             }
         }
@@ -601,7 +607,6 @@ void ejercicio_16(){
 
 }
 
-
 void ejercicio_17(){
     int numero_inicio, suma, suma_total=0;
     int numero_auxiliar = 0, contador=0;;
@@ -619,7 +624,7 @@ void ejercicio_17(){
                 suma = 0;
             }
 
-
+            //sumo sus divisores
             for(int i=1;i<numero_auxiliar ;i++){
                 if(numero_auxiliar%i == 0){
                     suma += i;

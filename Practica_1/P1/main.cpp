@@ -117,6 +117,7 @@ void ejercicio_1(){
 }
 
 void ejercicio_3(){
+
     /* Escriba un programa que debe leer un mes y un día de dicho mes para luego decir
     si esa combinación de mes y día son válidos. El caso más especial es el 29 de febrero,
     en dicho caso imprimir posiblemente año bisiesto
@@ -151,6 +152,7 @@ void ejercicio_3(){
         cout << "Error: ";
     }
 }
+
 void ejercicio_5(){
     /*Escriba un programa que muestre el siguiente patrón en la pantalla:
                        *
@@ -230,10 +232,12 @@ void ejercicio_7(){
         //Procedimiento de la serie
         while (n_serie > 0) {
             for(int i=2; i<=n_serie; i++){
+                //validacion
                 if(fibo_2>=n_serie){
                     n_serie = 0;
                     break;
                 }
+
                 fibo_2 = fibo_1 + fibo_2;
                 fibo_1 = fibo_2 - fibo_1;
 
