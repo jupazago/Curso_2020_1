@@ -79,8 +79,10 @@ void ejercicios(){
 void fun_metodo_1(int semilla){
     try {
         ifstream fileRead_texto;  //Puedo crear el flujo lectura desde un archivo
-
-        fileRead_texto.open("../archivo_texto.txt", ios::in); //abro archivo para su lectura
+        string nombre_archivo= "../archivo_texto.txt";
+        cout << "Ingrese nombre de archivo de lectura a cifrar: ";
+        cin >> nombre_archivo;
+        fileRead_texto.open(nombre_archivo, ios::in); //abro archivo para su lectura
         if(!fileRead_texto.is_open()){
             throw '2';
         }
@@ -99,21 +101,44 @@ void fun_metodo_1(int semilla){
         }
         //cout <<endl<< cadena_binaria<<endl;
         cout << endl;
-        //int tamanio = cadena_binaria.size();
+        int tamanio = cadena_binaria.size();
         string cadena_codificada = fun_a_codificar1(cadena_binaria, semilla);
-
+        char cad[tamanio];
         /*
          *
          * Imprimir la cadena codificada del metodo 1
-         *
+         */
         cout << "----------"<<endl;
         for(int i=0; i<tamanio; i++){
-            cout << cadena_codificada[i];
+            //cout << cadena_codificada[i];
+            cad[i] = cadena_codificada[i];
         }
         cout << "----------"<<endl;
 
-        */
+
         cout << endl;
+
+
+
+        ofstream escritura_metodo2;
+        nombre_archivo= "../archivo_codificado.txt";
+        cout << "Ingrese nombre de archivo de salida cifrado: ";
+        cin >> nombre_archivo;
+        cout << "Nombre de archivo de salida codificado: "<<nombre_archivo<<endl;
+
+        escritura_metodo2.open((nombre_archivo),ios::out);//abriendo o creando el archivo
+        if(escritura_metodo2.fail()){
+            //Si hubo fallas, capturar la excepcion
+            throw 505;
+        }
+
+        //ingreso el arreglo al archivo .txt
+        for(int i=0; i<tamanio;i++){
+            //cout << cad[i];
+            escritura_metodo2 << cad[i];
+        }
+
+        escritura_metodo2.close();
 
 
 
@@ -213,8 +238,11 @@ string fun_a_codificar1(string cadena_binaria, int semilla){
 void fun_metodo_2(int semilla){
     try {
         ifstream fileRead_texto;  //Puedo crear el flujo lectura desde un archivo
+        string nombre_archivo= "../archivo_texto.txt";
+        cout << "Ingrese nombre de archivo de lectura a cifrar: ";
+        cin >> nombre_archivo;
 
-        fileRead_texto.open("../archivo_texto.txt", ios::in); //abro archivo para su lectura
+        fileRead_texto.open(nombre_archivo, ios::in); //abro archivo para su lectura
         if(!fileRead_texto.is_open()){
             throw 505;
         }
@@ -253,7 +281,9 @@ void fun_metodo_2(int semilla){
         cout << endl;
 
         ofstream escritura_metodo2;
-        string nombre_archivo= "../archivo_codificado.txt";
+        nombre_archivo= "../archivo_codificado.txt";
+        cout << "Ingrese nombre de archivo de salida cifrado: ";
+        cin >> nombre_archivo;
         cout << "Nombre de archivo de salida codificado: "<<nombre_archivo<<endl;
 
         escritura_metodo2.open((nombre_archivo),ios::out);//abriendo o creando el archivo
@@ -350,14 +380,17 @@ void decodificar(){
 }
 
 void fun_deco_metodo_1(int semilla){
-    //xd
+    //...
 }
 
 void fun_deco_metodo_2(int semilla){
     try {
         ifstream fileRead_texto;  //Puedo crear el flujo lectura desde un archivo
+        string nombre_archivo= "../archivo_resultado.txt";
+        cout << "Ingrese nombre de archivo de lectura a descifrar: ";
+        cin >> nombre_archivo;
 
-        fileRead_texto.open("../archivo_codificado.txt", ios::in); //abro archivo para su lectura
+        fileRead_texto.open(nombre_archivo, ios::in); //abro archivo para su lectura
         if(!fileRead_texto.is_open()){
             throw '2';
         }
@@ -377,8 +410,12 @@ void fun_deco_metodo_2(int semilla){
         cout << endl;
 
         ofstream escritura_metodo2;
-        string nombre_archivo= "../archivo_resultado.txt";
-        cout << "Nombre de archivo de salida codificado: "<<nombre_archivo<<endl;
+
+        nombre_archivo= "../archivo_resultado.txt";
+
+        cout << "Ingrese nombre de archivo de salida: ";
+        cin >> nombre_archivo;
+        cout << "Nombre de archivo de salida descifrado: "<<nombre_archivo<<endl;
 
         escritura_metodo2.open((nombre_archivo),ios::out);//abriendo o creando el archivo
         if(escritura_metodo2.fail()){

@@ -136,7 +136,6 @@ string fun_a_decodificar2(string cadena_codificada, int semilla){
     int regresa = semilla-1;
     char arreglo_binario1[tamanio];
     int cont = 0;
-
     string segundo_paso1, segundo_paso;
 
 
@@ -385,7 +384,8 @@ void registrar_usuario(){
         }
 
         escritura.close();
-
+        cout << endl<< "Exito al guardar"<<endl;
+        system("pause");
 
     } catch (...) {
         cout << "Errores"<<endl;
@@ -502,7 +502,8 @@ void consultar_saldo_retirar(int valor){
         archivo.close();
 
         string cadena_decodificada = fun_deco_metodo_2(cadena, 4);
-        for(int i=0; i< cadena_decodificada.size(); i++){
+        int tama = cadena_decodificada.size();
+        for(int i=0; i< tama; i++){
             if(cadena_decodificada[i] == '0'
                     || cadena_decodificada[i] == '1'
                     || cadena_decodificada[i] == '2'
@@ -514,7 +515,7 @@ void consultar_saldo_retirar(int valor){
                     || cadena_decodificada[i] == '8'
                     || cadena_decodificada[i] == '9'
                     || cadena_decodificada[i] == ' '){
-                cout << cadena_decodificada[i];
+                //cout << cadena_decodificada[i];
             }
 
         }
