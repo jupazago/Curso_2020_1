@@ -8,15 +8,19 @@ using namespace std;
 
 bool iniciar_sesion(string key);
 
+//Funciones de Decodificacion
 string fun_deco_metodo_2(string cadena_codificada, int semilla);
 string fun_a_decodificar2(string cadena_codificada, int semilla);
 
+//Funciones de Encriptacion
 string fun_metodo_2(string cadena_texto, int semilla);
 string fun_a_codificar2(string cadena_binaria, int semilla);
 
+//Funcionalidades de la aplicacion
 void registrar_usuario();
 void consultar_saldo_retirar(int valor);
 
+//Verificacion de procesos
 string procesos(string texto, bool *encontrado, string *p_usuario, string *p_clave, int seccion);
 
 
@@ -498,7 +502,23 @@ void consultar_saldo_retirar(int valor){
         archivo.close();
 
         string cadena_decodificada = fun_deco_metodo_2(cadena, 4);
-        cout << cadena_decodificada<<endl;
+        for(int i=0; i< cadena_decodificada.size(); i++){
+            if(cadena_decodificada[i] == '0'
+                    || cadena_decodificada[i] == '1'
+                    || cadena_decodificada[i] == '2'
+                    || cadena_decodificada[i] == '3'
+                    || cadena_decodificada[i] == '4'
+                    || cadena_decodificada[i] == '5'
+                    || cadena_decodificada[i] == '6'
+                    || cadena_decodificada[i] == '7'
+                    || cadena_decodificada[i] == '8'
+                    || cadena_decodificada[i] == '9'
+                    || cadena_decodificada[i] == ' '){
+                cout << cadena_decodificada[i];
+            }
+
+        }
+
 
         while(quedarse[0]==false){
             cout<<endl<<"Ingrese el documento: ";
@@ -554,7 +574,7 @@ void consultar_saldo_retirar(int valor){
                                        //texto,  *encontrado,  *p_usuario,  *p_clave,  seccion
                 string saldo = procesos(cadena_decodificada, &encontrado, &usuario, &clave, 2);
 
-            }else if(nsaldo<=1000){
+            }else if(encontrado == true && nsaldo<=1000){
                 nsaldo = 0;
                 cout <<endl<<"Su saldo actual es: "<< nsaldo <<endl<<endl;
                                         //texto,  *encontrado,  *p_usuario,  *p_clave,  seccion
@@ -564,15 +584,20 @@ void consultar_saldo_retirar(int valor){
 
                  cout << endl << "Respuesta: " << nsaldo << endl << endl;
             }
-            usleep(5000000);    // Esperar 5 segundos
+            system("pause");
 
         }else if(valor==2){
             //Si es retiro
+            string saldo = procesos(cadena_decodificada, &encontrado, &usuario, &clave, 1);
 
-            //texto,  *encontrado,  *p_usuario,  *p_clave,  seccion
-            string saldo = procesos(cadena_decodificada, &encontrado, &usuario, &clave, 3);
-
-            usleep(5000000);    // Esperar 5 segundos
+            if(encontrado == true){
+                                            //texto,  *encontrado,  *p_usuario,  *p_clave,  seccion
+                string saldo = procesos(cadena_decodificada, &encontrado, &usuario, &clave, 3);
+                cout << endl << "Respuesta: " << saldo << endl << endl;
+            }else {
+                 cout << endl << "Respuesta: " << saldo << endl << endl;
+            }
+            system("pause");
         }
     } catch (...) {
 
@@ -629,11 +654,13 @@ string procesos(string texto, bool *encontrado, string *usuario, string *clave, 
 
         //convierte a int y viceversa
         int nsaldo = stoi(dinero);
-        nsaldo -=1000;
+
         if(nsaldo <1000){
             nsaldo =0;
+        }else{
+            nsaldo -=1000;
         }
-        //cout << endl << "$" << nsaldo<< endl;
+        // nsaldo es el saldo que tiene el usuario
         dinero = to_string(nsaldo);
         //Divido el arreglo en segemento, se encuentra el dinero respectivo
         //y se reemplaza para luego cifrar y actualizar la base de datos
@@ -644,7 +671,19 @@ string procesos(string texto, bool *encontrado, string *usuario, string *clave, 
         size_t t_dinero = dinero.size(); //tamano de dinero
         temporal3.replace(pos3,t_dinero,dinero); // reemplazo
         texto2 = temporal2+temporal3;
-        //cout <<endl<< texto2<<endl; //texto modificado exitosamente
+
+        int tamanio1 = d_viejo.size();
+        int tamanio2 = dinero.size();
+        for(int i=0; i<tamanio1; i++){
+            if(i < tamanio2){
+                temporal3.replace(pos3+i, pos3+i, &dinero[i]);
+            }else {
+                temporal3.replace(pos3+i, pos3+i, " ");
+            }
+        }
+
+
+        cout <<endl<< texto2<<endl; //texto modificado exitosamente
 
         //////////////
         string cadena_codificada = fun_metodo_2(texto2, 4);
@@ -687,6 +726,8 @@ string procesos(string texto, bool *encontrado, string *usuario, string *clave, 
         }
         escritura.close();
         return "Exito al guardar";
+
+
     }else if(seccion == 3){
 
         string texto2   = texto;
@@ -703,13 +744,14 @@ string procesos(string texto, bool *encontrado, string *usuario, string *clave, 
 
         //convierte a int y viceversa
         int nsaldo = stoi(dinero);
+
         int retirar;
         cout << "Ingrese saldo a retirar: ";
         cin >> retirar;
 
-        if(nsaldo-(retirar+1000)>1001){
-            nsaldo-=1000;
-            nsaldo-=retirar;
+        if(nsaldo-(retirar+1000)>1000){
+
+            nsaldo-=(retirar+1000);
             cout << endl << "$" << nsaldo<< endl;
             dinero = to_string(nsaldo);
             //Divido el arreglo en segemento, se encuentra el dinero respectivo
@@ -718,10 +760,20 @@ string procesos(string texto, bool *encontrado, string *usuario, string *clave, 
             string temporal2 = texto2.substr(0,pos2);//primera mitad
             string temporal3 = texto2.substr(pos2);//segunda mitad
             size_t pos3 = temporal3.find(d_viejo); // posicion de dinero
-            size_t t_dinero = dinero.size(); //tamano de dinero
-            temporal3.replace(pos3,t_dinero,dinero); // reemplazo
-            texto2=temporal2+temporal3;
-            //cout <<endl<< texto2<<endl;
+
+            int tamanio1 = d_viejo.size();
+            int tamanio2 = dinero.size();
+            for(int i=0; i<tamanio1; i++){
+                if(i < tamanio2){
+                    temporal3.replace(pos3+i, pos3+i, &dinero[i]);
+                }else {
+                    temporal3.replace(pos3+i, pos3+i, " ");
+                }
+            }
+
+            //temporal3.replace(pos3,t_dinero,dinero); // reemplazo
+            texto2 = temporal2+temporal3;
+            cout <<endl<< texto2<<endl;
 
 
             string cadena_codificada = fun_metodo_2(texto2, 4);
@@ -764,7 +816,7 @@ string procesos(string texto, bool *encontrado, string *usuario, string *clave, 
             }
             escritura.close();
 
-            cout << "Retiro exitoso de : $" << retirar << endl;
+            cout <<endl<< "$" << retirar << endl;
             return "Retiro exitoso";
         }else{
 
