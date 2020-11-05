@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <fstream> //eof
 #include <relacion.h>
 
 using namespace std;
@@ -140,11 +141,11 @@ int main()
 
 
 map<string,vector<Relacion>> cargar_datos(map<string,vector<Relacion>> contenedor){
-    Relacion relacion; //Instanciamos la clase
+    //Relacion relacion; //Instanciamos la clase
 
 
     //Relacion relacion("A", 0);  //Ejemplo por constructor
-
+/*
     relacion.setConexion("A");
     relacion.setCosto(0);
     contenedor["A"].push_back(relacion);
@@ -216,7 +217,54 @@ map<string,vector<Relacion>> cargar_datos(map<string,vector<Relacion>> contenedo
     contenedor["D"].push_back(relacion);
 
 
+    */
+    Relacion relacion;
 
+
+    ifstream fileRead_texto;  //Puedo crear el flujo lectura desde un archivo
+    string nombre_archivo= "../Data_Base.txt";
+
+    fileRead_texto.open(nombre_archivo, ios::in); //abro archivo para su lectura
+    if(!fileRead_texto.is_open()){
+        throw '2';
+    }
+    string cadena = "invalido", enrutador;
+    int costo;
+    while(!fileRead_texto.eof()){ //mientras no sea el final del archivo
+        if(cadena=="-"){
+            fileRead_texto >> cadena;
+            enrutador = cadena;
+        //---------------------------------
+            fileRead_texto >> cadena;
+            relacion.setConexion(cadena);
+        //---------------------------------
+            fileRead_texto >> cadena;
+            costo = stoi(cadena);
+            relacion.setCosto(costo);
+        //---------------------------------
+
+            contenedor[enrutador].push_back(relacion);
+
+
+        }else if(cadena != "invalido"){
+
+            enrutador = cadena;
+        //---------------------------------
+            fileRead_texto >> cadena;
+            relacion.setConexion(cadena);
+        //---------------------------------
+            fileRead_texto >> cadena;
+            costo = stoi(cadena);
+            relacion.setCosto(costo);
+        //---------------------------------
+
+            contenedor[enrutador].push_back(relacion);
+        }
+
+        fileRead_texto >> cadena;
+
+    }
+    fileRead_texto.close();
 
     return contenedor;
 }
