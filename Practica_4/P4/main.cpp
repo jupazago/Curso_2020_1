@@ -14,11 +14,12 @@ map<string,vector<Relacion>> RemoverEnrutador(map<string,vector<Relacion>> enrut
 bool existenciaEnrutadores(map<string,vector<Relacion>> enrutador, string nom_enrutador);
 map<string,vector<Relacion>> CrearRelacion(map<string,vector<Relacion>> enrutador, string nom_enrutador, string nom_enrutador2);
 map<string,vector<Relacion>> EliminarRelacion(map<string,vector<Relacion>> enrutador, string nom_enrutador, string nom_enrutador2);
+bool existeRuta(map<string,vector<Relacion>> contenedor, string nom_enrutador1, string nom_enrutador2, string *recorrido, int *costo_total);
 
 int main()
 {
     int valor=1;
-    string nom_enrutador, nom_enrutador2;
+    string nom_enrutador, nom_enrutador2, nom_enrutador1;
     bool encontrado=false, encontrado2=false ;
 
     //mapa de clave ENRUTADOR y valor de tipo vector de estructura RELACION
@@ -128,8 +129,44 @@ int main()
 
         }else if(valor==5){
             imprimir(enrutador);
+
         }else if(valor==6){
-            cout << "Punto del taller no realizado"<<endl<<endl;
+            bool encontrados[2] = {false, false};
+
+
+            cout<<endl<<"Ingresa nombre del enrutador #1: ";
+            cin >> nom_enrutador1;
+            encontrados[0] = existenciaEnrutadores(enrutador, nom_enrutador1);
+
+            cout<<endl<<"Ingresa nombre del enrutador #2: ";
+            cin >> nom_enrutador2;
+            encontrados[1] = existenciaEnrutadores(enrutador, nom_enrutador2);
+
+            if(encontrados[0]==true && encontrados[1]==true){
+                //si si existe
+                string recorrido;
+                int costo_total=0;
+                bool verificar = existeRuta(enrutador, nom_enrutador1, nom_enrutador2, &recorrido, &costo_total);
+                if(verificar == true){
+                    cout << "Primera ruta encontrada: "<<recorrido<<endl;
+                    cout << "Costo: "<<costo_total<<endl;
+                }else{
+                    cout<<"Paila"<<endl;
+                }
+
+            }else if(encontrados[0]==false && encontrados[1]==false){
+                cout << "No existe ningun enrutador con esos nombres"<<endl;
+
+            }else if(encontrados[0]==false){
+                cout << "No existe un enrutador con dicho nombre: "<<nom_enrutador<<endl;
+
+            }else if(encontrados[1]==false){
+                cout << "No existe un enrutador con dicho nombre: "<<nom_enrutador2<<endl;
+            }
+
+
+
+
         }else if(valor==7){
             //cargar datos de simulacion
             enrutador=cargar_datos(enrutador);
@@ -242,12 +279,10 @@ map<string,vector<Relacion>> cargar_datos(map<string,vector<Relacion>> contenedo
             costo = stoi(cadena);
             relacion.setCosto(costo);
         //---------------------------------
-
             contenedor[enrutador].push_back(relacion);
 
 
         }else if(cadena != "invalido"){
-
             enrutador = cadena;
         //---------------------------------
             fileRead_texto >> cadena;
@@ -257,8 +292,8 @@ map<string,vector<Relacion>> cargar_datos(map<string,vector<Relacion>> contenedo
             costo = stoi(cadena);
             relacion.setCosto(costo);
         //---------------------------------
-
             contenedor[enrutador].push_back(relacion);
+
         }
 
         fileRead_texto >> cadena;
@@ -404,6 +439,55 @@ map<string,vector<Relacion>> EliminarRelacion(map<string,vector<Relacion>> enrut
 }
 
 
+bool existeRuta(map<string,vector<Relacion>> contenedor, string nom_enrutador1, string nom_enrutador2, string *recorrido, int *costo_total){
 
+    for(auto par=begin(contenedor); par!=end(contenedor); par++){
+        *recorrido = " ";
+        *recorrido = *recorrido + par->first + " ";
+        *costo_total= 0;
+
+        if(par->first == nom_enrutador1){
+            cout<<par->first<<endl;
+            for(auto emp=begin(par->second); emp!=end(par->second); emp++){
+                if(emp->getConexion() == nom_enrutador2){
+                    *recorrido = *recorrido + emp->getConexion() + " ";
+                    *costo_total += stoi(to_string(emp->getCosto()));
+
+                    return true;
+                }
+                for(auto par2=begin(contenedor); par2!=end(contenedor); par2++){
+                    if(par2->first == emp->getConexion()){
+
+                        //Entramos a ver sus rutas
+                        for(auto emp2=begin(par->second); emp2!=end(par->second); emp2++){
+                            if(emp2->getConexion() == nom_enrutador2){
+                                *recorrido = *recorrido + emp2->getConexion() + " ";
+                                *costo_total += stoi(to_string(emp2->getCosto()));
+                                cout<<par2->first<<endl;
+                                return true;
+                            }
+                            for(auto par3=begin(contenedor); par3!=end(contenedor); par3++){
+                                if(par3->first == emp->getConexion()){
+                                    //Entramos a ver sus rutas
+                                    for(auto emp3=begin(par->second); emp3!=end(par->second); emp3++){
+                                        if(emp3->getConexion() == nom_enrutador2){
+                                            *recorrido = *recorrido + emp3->getConexion() + " ";
+                                            *costo_total += stoi(to_string(emp3->getCosto()));
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    //par->first                Enrutador
+    //emp->getConexion()        conexion
+    //emp->getCosto()           costo
+    return false;
+}
 
 
