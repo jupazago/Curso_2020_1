@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/imagenes">
+        <file>fondo_pacman.jpg</file>
+        <file>pac.png</file>
+        <file>pac2.png</file>
+        <file>fantasma.png</file>
+    </qresource>
+</RCC>

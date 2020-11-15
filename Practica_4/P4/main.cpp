@@ -149,9 +149,9 @@ int main()
                 bool verificar = existeRuta(enrutador, nom_enrutador1, nom_enrutador2, &recorrido, &costo_total);
                 if(verificar == true){
                     cout << "Primera ruta encontrada: "<<recorrido<<endl;
-                    cout << "Costo: "<<costo_total<<endl;
+                    cout << "Costo Total: "<<costo_total<<endl;
                 }else{
-                    cout<<"Paila"<<endl;
+                    cout<<"La distancia entre los enrutadores es mayor a 2"<<endl;
                 }
 
             }else if(encontrados[0]==false && encontrados[1]==false){
@@ -447,40 +447,45 @@ bool existeRuta(map<string,vector<Relacion>> contenedor, string nom_enrutador1, 
         *costo_total= 0;
 
         if(par->first == nom_enrutador1){
-            cout<<par->first<<endl;
+            //cout<<"*"<<par->first<<endl;
             for(auto emp=begin(par->second); emp!=end(par->second); emp++){
                 if(emp->getConexion() == nom_enrutador2){
+
+                    //Si se encuentra a una distancia de 1
+
                     *recorrido = *recorrido + emp->getConexion() + " ";
                     *costo_total += stoi(to_string(emp->getCosto()));
-
+                    cout<<" "<<emp->getConexion();
+                    cout<<endl<<endl;
                     return true;
-                }
-                for(auto par2=begin(contenedor); par2!=end(contenedor); par2++){
-                    if(par2->first == emp->getConexion()){
 
-                        //Entramos a ver sus rutas
-                        for(auto emp2=begin(par->second); emp2!=end(par->second); emp2++){
-                            if(emp2->getConexion() == nom_enrutador2){
-                                *recorrido = *recorrido + emp2->getConexion() + " ";
-                                *costo_total += stoi(to_string(emp2->getCosto()));
-                                cout<<par2->first<<endl;
-                                return true;
-                            }
-                            for(auto par3=begin(contenedor); par3!=end(contenedor); par3++){
-                                if(par3->first == emp->getConexion()){
-                                    //Entramos a ver sus rutas
-                                    for(auto emp3=begin(par->second); emp3!=end(par->second); emp3++){
-                                        if(emp3->getConexion() == nom_enrutador2){
-                                            *recorrido = *recorrido + emp3->getConexion() + " ";
-                                            *costo_total += stoi(to_string(emp3->getCosto()));
-                                            return true;
-                                        }
-                                    }
+                }
+                if(emp->getConexion() != nom_enrutador1){
+                    //cout<<" **"<<emp->getConexion()<<": ";
+
+                    for(auto par2=begin(contenedor); par2!=end(contenedor); par2++){
+                        if(par2->first == emp->getConexion()){
+                            //Entramos a ver sus rutas
+                            //cout<<" -"<<par2->first;
+                            for(auto emp2=begin(par2->second); emp2!=end(par2->second); emp2++){
+
+                                if(emp2->getConexion() == nom_enrutador2){
+                                    *recorrido = *recorrido + emp->getConexion() + " ";
+                                    *recorrido = *recorrido + emp2->getConexion() + " ";
+                                    *costo_total += stoi(to_string(emp->getCosto()));
+                                    *costo_total += stoi(to_string(emp2->getCosto()));
+                                    cout<<endl<<endl;
+                                    return true;
+                                }
+
+                                if(emp2->getConexion() != nom_enrutador1 || par2->first != emp->getConexion()){
+                                    //cout << " -"<<emp2->getConexion();
                                 }
                             }
                         }
                     }
                 }
+                cout<<endl;
             }
         }
     }
