@@ -15,7 +15,6 @@
 #include <QString>      //Mostrar en pantalla
 #include <QTimer>       //tiempo
 #include <QDateTime>    //tiempo 2
-#include <fstream>      //eof
 
 
 QT_BEGIN_NAMESPACE
@@ -34,21 +33,15 @@ public slots:
     void funcion();
     void moviminentosEnemigos();
 
+
 private:
     Ui::MainWindow *ui;
-
-    //ifstream *fileRead_texto;
-    QString *nombre_archivo;
 
     QTimer *timer;
     QTimer *timer2;
 
     Cuerpo *objCuerpo;
 
-    Pared *paredSup;
-    Pared *paredInf;
-    Pared *paredIzq;
-    Pared *paredDer;
     Pared *pared;
 
     Fantasma *fantasmal1, *fantasmal2, *fantasmal3;

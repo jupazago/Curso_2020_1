@@ -4,5 +4,9 @@
         <file>pac.png</file>
         <file>pac2.png</file>
         <file>fantasma.png</file>
+        <file>pac4.png</file>
+        <file>pac0.png</file>
+        <file>pac1.png</file>
+        <file>pac3.png</file>
     </qresource>
 </RCC>

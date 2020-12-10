@@ -2,6 +2,8 @@
 #define CUERPO_H
 #include <QGraphicsItem> //para que sea un elemento graficable
 #include <QPainter>
+#include <QPixmap>
+#include <QRectF>
 
 
 class Cuerpo: public QGraphicsItem

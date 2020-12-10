@@ -488,10 +488,14 @@ compiler_rcc_clean:
 	-$(DEL_FILE) qrc_adjuntos.cpp
 qrc_adjuntos.cpp: ../P5/adjuntos/adjuntos.qrc \
 		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/bin/rcc.exe \
+		../P5/adjuntos/pac0.png \
+		../P5/adjuntos/pac4.png \
 		../P5/adjuntos/fondo_pacman.jpg \
 		../P5/adjuntos/fantasma.png \
+		../P5/adjuntos/pac3.png \
 		../P5/adjuntos/pac.png \
-		../P5/adjuntos/pac2.png
+		../P5/adjuntos/pac2.png \
+		../P5/adjuntos/pac1.png
 	C:\Qt\Qt5.14.0\5.14.0\mingw73_64\bin\rcc.exe -name adjuntos ..\P5\adjuntos\adjuntos.qrc -o qrc_adjuntos.cpp
 
 compiler_moc_predefs_make_all: moc_predefs.h
@@ -1244,7 +1248,29 @@ mainwindow.o: ../P5/mainwindow.cpp ../P5/mainwindow.h \
 		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtCore/qbasictimer.h \
 		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtCore/QDateTime \
 		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtCore/qdatetime.h \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtCore/QVariant \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtWidgets/QApplication \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtWidgets/qapplication.h \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtCore/qcoreapplication.h \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtCore/qeventloop.h \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtWidgets/qdesktopwidget.h \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtGui/qguiapplication.h \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtGui/qinputmethod.h \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtWidgets/QGraphicsView \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtWidgets/qgraphicsview.h \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtWidgets/qscrollarea.h \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtWidgets/qabstractscrollarea.h \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtWidgets/QMenuBar \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtWidgets/qmenubar.h \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtWidgets/qmenu.h \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtWidgets/qaction.h \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtWidgets/qactiongroup.h \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtWidgets/QStatusBar \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtWidgets/qstatusbar.h \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtWidgets/QWidget \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtCore/QFile \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtCore/QTextStream
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ..\P5\mainwindow.cpp
 
 mitimer.o: ../P5/mitimer.cpp ../P5/mitimer.h

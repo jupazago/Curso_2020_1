@@ -57,11 +57,13 @@ void Cuerpo::MoveRight()
 
 void Cuerpo::rotarLeft()
 {
-    posx-=posx;
+
 }
 
 void Cuerpo::rotarUp()
 {
+    QPixmap pixmap;
+    pixmap.load(":/imagenes/pac4.png");
 
 }
 
@@ -77,7 +79,8 @@ void Cuerpo::rotarRight()
 
 QRectF Cuerpo::boundingRect() const
 {
-    return QRect(-r,-r,2*r,2*r);
+    //Ubicacion
+    return QRectF( -r, -r, 2*r, 2*r);
 }
 
 void Cuerpo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -87,7 +90,7 @@ void Cuerpo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     //painter->drawEllipse(boundingRect());
     QPixmap pixmap;
     pixmap.load(":/imagenes/pac2.png");
-    painter->drawPixmap(boundingRect(),pixmap,pixmap.rect());
+    painter->drawPixmap(boundingRect(), pixmap, pixmap.rect());
 
 }
 

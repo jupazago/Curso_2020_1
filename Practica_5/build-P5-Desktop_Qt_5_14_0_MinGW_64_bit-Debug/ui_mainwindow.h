@@ -36,19 +36,19 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(799, 600);
+        MainWindow->resize(887, 600);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         lblReloj = new QLabel(centralwidget);
         lblReloj->setObjectName(QString::fromUtf8("lblReloj"));
-        lblReloj->setGeometry(QRect(750, 130, 31, 31));
+        lblReloj->setGeometry(QRect(840, 130, 31, 31));
         QFont font;
         font.setFamily(QString::fromUtf8("Nirmala UI"));
         font.setPointSize(12);
         lblReloj->setFont(font);
         label_2 = new QLabel(centralwidget);
         label_2->setObjectName(QString::fromUtf8("label_2"));
-        label_2->setGeometry(QRect(730, 110, 61, 16));
+        label_2->setGeometry(QRect(820, 110, 61, 16));
         QFont font1;
         font1.setPointSize(10);
         font1.setBold(true);
@@ -58,21 +58,21 @@ public:
         label_2->setScaledContents(false);
         lblPuntaje = new QLabel(centralwidget);
         lblPuntaje->setObjectName(QString::fromUtf8("lblPuntaje"));
-        lblPuntaje->setGeometry(QRect(750, 40, 31, 31));
+        lblPuntaje->setGeometry(QRect(840, 40, 31, 31));
         lblPuntaje->setFont(font);
         label = new QLabel(centralwidget);
         label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(730, 10, 61, 16));
+        label->setGeometry(QRect(820, 10, 61, 16));
         label->setFont(font1);
         label->setTextFormat(Qt::AutoText);
         label->setScaledContents(false);
         graphicsView = new QGraphicsView(centralwidget);
         graphicsView->setObjectName(QString::fromUtf8("graphicsView"));
-        graphicsView->setGeometry(QRect(0, -20, 711, 500));
+        graphicsView->setGeometry(QRect(0, -20, 811, 581));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 799, 21));
+        menubar->setGeometry(QRect(0, 0, 887, 21));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));

@@ -1,5 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QFile>
+#include <QTextStream>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -20,126 +23,37 @@ MainWindow::MainWindow(QWidget *parent)
     scene->setSceneRect(0,0,780,480);
     scene->backgroundBrush();
     ui->graphicsView->setBackgroundBrush(QPixmap(":/imagenes/fondo_pacman.jpg"));
+
+    //Agregamos el pacman
     objCuerpo = new Cuerpo(15,40,40);
     scene->addItem(objCuerpo);
 
+
+    //Pared
     paredes = *new QList<Pared *>();
-    //                   x-y-ancho-alto
 
-/*
-    ifstream fileRead_texto;  //Puedo crear el flujo lectura desde un archivo
-    string nombre_archivo= "../coordenadas_paredes.txt";
 
-    fileRead_texto.open(nombre_archivo, ios::in); //abro archivo para su lectura
-    if(!fileRead_texto.is_open()){
-        throw '2';
+    QFile archivo("../coordenadas_paredes.txt");  //Puedo crear el flujo lectura desde un archivo
+    if(!archivo.open(QIODevice::ReadOnly)){
+        QMessageBox::critical(this,"¡Informacion!", "No se puede leer el archivo txt");
     }
-*/
-    paredSup = new Pared(0,0,780,20);
-    paredes.push_back(paredSup);
-    scene->addItem(paredes.back());
 
-    paredInf = new Pared(0,460,780,20);
-    paredes.push_back(paredInf);
-    scene->addItem(paredes.back());
-
-    paredIzq = new Pared(0,0,20,460);
-    paredes.push_back(paredIzq);
-    scene->addItem(paredes.back());
-
-    paredDer = new Pared(760,0,20,460);
-    paredes.push_back(paredDer);
-    scene->addItem(paredes.back());
-
-
-
-    pared = new Pared(60,60,60,20);
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-    pared = new Pared(60,80,20,120);
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-
-    pared = new Pared(60,400,60,20);
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-    pared = new Pared(60,280,20,120);
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-
-
-    pared = new Pared(660,60,60,20);
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-    pared = new Pared(700,80,20,120);
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-
-    pared = new Pared(660,400,60,20);
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-    pared = new Pared(700,280,20,120);
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-
-
-    pared = new Pared(585,190,20,80);
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-    pared = new Pared(560,130,80,20);
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-    pared = new Pared(560,330,80,20);
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-
-    pared = new Pared(175,190,20,80);
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-    pared = new Pared(140,130,80,20);
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-    pared = new Pared(140,330,80,20);
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-
-    pared = new Pared(200,400,380,20);
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-
-    pared = new Pared(290,330,190,20);//larga
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-    //pared = new Pared(290,200,70,20);//arriba izquierda
-    //paredes.push_back(pared);
-    //scene->addItem(paredes.back());
-    //pared = new Pared(420,200,70,20);//arriba derecha
-    //paredes.push_back(pared);
-    //scene->addItem(paredes.back());
-    pared = new Pared(290,220,20,120);//izquierda
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-    pared = new Pared(470,220,20,130);//derecha
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-
-    pared = new Pared(380,60,20,20);
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-    pared = new Pared(290,60,20,80);
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-    pared = new Pared(180,60,20,80);
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-    pared = new Pared(470,60,20,80);
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-    pared = new Pared(580,60,20,80);
-    paredes.push_back(pared);
-    scene->addItem(paredes.back());
-
-
+    QTextStream in(&archivo);
+    QString valor;
+    while(!in.atEnd()){ //mientras no sea el final del archivo
+        valor = in.readLine();
+        int paredX = valor.toInt();
+        valor = in.readLine();
+        int paredY = valor.toInt();
+        valor = in.readLine();
+        int paredW = valor.toInt();
+        valor = in.readLine();
+        int paredH = valor.toInt();
+        //                   x-y-ancho-alto
+        pared = new Pared( paredX, paredY, paredW, paredH);
+        paredes.push_back(pared);
+        scene->addItem(paredes.back());
+    }
 
     //  COMIDA
     galletas = *new QList<Comida *>();
@@ -187,6 +101,7 @@ void MainWindow::keyPressEvent(QKeyEvent *evento)
         for (auto p=paredes.begin(); p!=paredes.end(); p++) {
             if(objCuerpo->collidesWithItem(*p)){
                 objCuerpo->MoveRight();
+                objCuerpo->rotarUp();
 
 
             }
