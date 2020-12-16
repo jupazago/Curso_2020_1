@@ -993,7 +993,12 @@ mainwindow.o: ../sistemaPlanetario/mainwindow.cpp ../sistemaPlanetario/mainwindo
 		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtGui/qtextoption.h \
 		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtWidgets/QGraphicsItem \
 		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtWidgets/qgraphicsitem.h \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtCore/QFile \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtWidgets/QMessageBox \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtWidgets/qmessagebox.h \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtWidgets/qdialog.h \
+		C:/Qt/Qt5.14.0/5.14.0/mingw73_64/include/QtCore/QTextStream
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ..\sistemaPlanetario\mainwindow.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 

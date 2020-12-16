@@ -35,7 +35,7 @@ private:
     QTimer *timer;
     QGraphicsScene *scena;
     float dt;
-    int contador;
+    int contador=0;
     int h_limit;
     int v_limit;
     QList<Cuerpograf*> bars;
